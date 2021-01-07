@@ -1,4 +1,4 @@
-import scipy.stats as ss
+import collections
 import scores
 
 
@@ -50,17 +50,21 @@ class Rank():
         self.rank = {}
 
     def get_rank(self):
-        item_vector=[]
-        res_vector=[]
-        score_res = sorted(self.score.score, key=self.score.score.__getitem__, reverse=True)
-        for item in score_res:
-            item_vector.append(item)
-            res_vector.append( abs(max(self.score.score.values()) - self.score.score[item]))
-        rank_vektor = ss.rankdata(res_vector, method='average')
+        my_d = collections.defaultdict(list)
+        for key, val in self.score.score.items():
+            my_d[max(self.score.score.values()) - val].append(key)
+
+        ranked_key_list = []
+        n = v = 1
+        for _, my_list in sorted(my_d.items()):
+            v = n + (len(my_list)-1)/2
+            for e in my_list:
+                n += 1
+                ranked_key_list.append((e, v))
 
         rank_dict = {}
-        for x in range(len(item_vector)):
-            rank_dict[item_vector[x]] = rank_vektor[x]
+        for (method, rank) in ranked_key_list:
+            rank_dict[method] = rank
         return rank_dict
 
 
