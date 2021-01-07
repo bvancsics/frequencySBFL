@@ -67,7 +67,7 @@ class Coverage():
 
 
     def read_chain(self, file_path, endianness='big'):
-        with open("\\\\?\\" + file_path, 'rb') as file:
+        with open(file_path, 'rb') as file:
             for item in self.read_chain_from_buffer(file, endianness=endianness):
                 yield item
 
