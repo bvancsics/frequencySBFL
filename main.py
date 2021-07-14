@@ -1,25 +1,16 @@
-import argumentum_parser
-import coverage
-import ranks
+from base import Coverage, Ranks, ArgumentumParser
 
-# For example: python -W ignore main.py
-# --cov-folder=./Lang/Lang-1b-chain-count/coverage/
-# --nameMapping=./Lang/Lang-1b-chain-count/coverage/trace.trc.names
-# --change=./changed_methods/Lang-changes.csv
-# --bugID=1
+param_dict = ArgumentumParser.arg_parser()
+metrics = ArgumentumParser.get_metrics()
 
-param_dict = argumentum_parser.arg_parser()
-metrics = ["Barinel", "Barinel-C",
-           "Jaccard", "Jaccard-C",
-           "Ochiai", "Ochiai-C",
-           "Russell-Rao", "Russell-Rao-C",
-           "Sorensen-Dice", "Sorensen-Dice-C"]
+cov = Coverage.Coverage(param_dict["naive-folder"],
+                        param_dict["naive-mapper"],
+                        param_dict["unique-folder"],
+                        param_dict["unique-mapper"])
 
-print("bugID;"+";".join(metrics))
-cov = coverage.Coverage(param_dict["cov-folder"], param_dict["nameMapping"])
-cov.set_coverage_data(param_dict["change"], param_dict["bugID"])
+cov.set_coverage_data(param_dict["change"],
+                      param_dict["bugID"])
 
-rankContainer = ranks.RankContainer(cov, metrics)
-rankContainer.add_ranks()
-
+rankContainer = Ranks.RankContainer(cov, metrics)
+rankContainer.add_ranks(param_dict["bugID"], param_dict["rank-method"])
 rankContainer.printMinRanks(param_dict["bugID"])

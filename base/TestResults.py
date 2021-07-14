@@ -10,7 +10,6 @@ class PassFailed():
         self.failed_tests = self.read_failed_tests(cov_folder)
         self.passed_tests = self.read_passed_tests(cov_folder)
 
-
     def read_pass_failed_data(self, cov_folder):
         pass_failed_dict={}
         for r, d, f in os.walk(cov_folder):
@@ -20,7 +19,6 @@ class PassFailed():
                     result = results_dict[file.split("-")[1].split(".")[0]]
                     pass_failed_dict[test_name] = result
         return pass_failed_dict
-
 
     def read_passed_tests(self, cov_folder):
         passed_tests = list()
@@ -48,18 +46,15 @@ class PassFailed():
         self.calc_number_of_failed()
         self.calc_number_of_pass()
 
-
     def calc_number_of_failed(self):
         for test, res in self.pass_failed_dict.items():
             if int(res) == int(0):
                 self.number_of_failed += 1
 
-
     def calc_number_of_pass(self):
         for test, res in self.pass_failed_dict.items():
             if int(res) == int(1):
                 self.number_of_pass += 1
-
 
     def covered_failed_tests(self, covered_tests):
         failed = 0
@@ -67,7 +62,6 @@ class PassFailed():
             if self.pass_failed_dict[test] == int(0):
                 failed += 1
         return failed
-
 
     def covered_passed_tests(self, covered_tests):
         passed = 0
