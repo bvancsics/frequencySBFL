@@ -1,5 +1,6 @@
 import os
 import networkx as nx
+from sys import platform
 from base import TestResults
 from base import FourMetrics
 
@@ -125,16 +126,21 @@ class Coverage:
 
 
     def read_chain(self, file_path, endianness='big'):
-        with open("\\\\?\\" + file_path, 'rb') as file:
+        if platform == "win32":
+            file_path = "\\\\?\\" + file_path
+        with open(file_path, 'rb') as file:
             for item in self.read_chain_from_buffer(file, endianness=endianness):
                 yield item
 
-    def read_count(self, file, endianness='big'):
-        with open("\\\\?\\" + file, 'rb') as file:
+    def read_count(self, file_path, endianness='big'):
+        if platform == "win32":
+            file_path = "\\\\?\\" + file_path
+        with open(file_path, 'rb') as file:
             for item in self.read_count_from_buffer(file, endianness=endianness):
                 yield item
 
     def read_count_from_buffer(self, buffer, mapping=None, endianness='big'):
+        _ = buffer.read(5)  # file and granularity info bytes
         while True:
             chunk = buffer.read(2)
             if not chunk:
@@ -159,6 +165,7 @@ class Coverage:
 
 
     def read_chain_from_buffer(self, buffer, mapping=None, endianness='big'):
+        _ = buffer.read(5)  # file and granularity info bytes
         while True:
             chunk = buffer.read(4)
             if not chunk:
