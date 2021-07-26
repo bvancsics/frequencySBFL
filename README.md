@@ -1,6 +1,22 @@
 # frequencySBFL
-Call Frequency-Based Fault Localization
+Fault Localization Using Function Call Frequencies
 
-Run: python -W ignore main.py --cov-folder=[trace-folder]/coverage/ --nameMapping=[trace-folder]/coverage/trace.trc.names --change=./changed_methods/[project]-changes.csv --bugID=[ID]
+Run main.py
 
-For example: python -W ignore main.py --cov-folder=./Lang/Lang-1b-chain-count/coverage/ --nameMapping=./Lang/Lang-1b-chain-count/coverage/trace.trc.names --change=./changed_methods/Lang-changes.csv --bugID=1
+    python3 -W ignore main.py \
+        --naive-folder=[output folder]/naive-coverage/ \
+        --naive-mapper=[output folder]/naive-coverage/trace.trc.names \
+        --unique-folder=[output folder]/unique-coverage/ \
+        --unique-mapper=[output folder]/unique-coverage/trace.trc.names \
+        --change=./changed_methods/Lang-changes.csv \
+        --bugID=[bug]
+
+For example:
+
+      python3 -W ignore main.py \
+          --naive-folder=/sbfl/Lang_1b/naive-coverage/ \
+          --naive-mapper=/sbfl/Lang_1b/naive-coverage/trace.trc.names \
+          --unique-folder=/sbfl/Lang_1b/unique-coverage/ \
+          --unique-mapper=/sbfl/Lang_1b/unique-coverage/trace.trc.names \
+          --change=./changed_methods/Lang-changes.csv \
+          --bugID=1
